@@ -1,0 +1,8 @@
+{
+  "name": "openai-image-generator-vercel",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "openai": "^4.0.0"
+  }
+}
