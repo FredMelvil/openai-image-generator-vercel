@@ -5,17 +5,17 @@ const openai = new OpenAI({
 });
 
 export default async function handler(req, res) {
-  // CORS headers
+  // CORS headers pour toutes les méthodes
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
-  // Pré-requête CORS OPTIONS
+  // Traiter la pré-requête CORS (OPTIONS) avant toute autre logique
   if (req.method === "OPTIONS") {
     return res.status(200).end();
   }
 
-  // Pour tester l'API en GET
+  // Test rapide GET
   if (req.method === 'GET') {
     return res.status(200).json({ hello: "API generate OK !" });
   }
