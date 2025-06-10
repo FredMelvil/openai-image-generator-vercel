@@ -5,25 +5,27 @@ const openai = new OpenAI({
 });
 
 export default async function handler(req, res) {
-  // CORS headers pour toutes les méthodes
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  // Sécurité CORS : n'autorise que ton site officiel
+  res.setHeader('Access-Control-Allow-Origin', 'https://myiacontent.com');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  // Traiter la pré-requête CORS (OPTIONS) avant toute autre logique
-  if (req.method === "OPTIONS") {
+  // Gestion de la pré-demande CORS
+  if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
 
-  // Test rapide GET
+  // Test GET (utile pour vérifier que l’API fonctionne)
   if (req.method === 'GET') {
     return res.status(200).json({ hello: "API generate OK !" });
   }
 
-  if (req.method !== "POST") {
+  // Refuse toutes les autres méthodes que POST
+  if (req.method !== 'POST') {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
+  // Récupération du prompt envoyé
   let prompt = null;
   try {
     if (req.body && typeof req.body === "string") {
@@ -39,6 +41,7 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "Missing prompt" });
   }
 
+  // Appel à l'API OpenAI/DALL·E
   try {
     const response = await openai.images.generate({
       model: "dall-e-3",
